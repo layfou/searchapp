@@ -20,7 +20,6 @@ const fetchFunction = async () => {
     
     // DATA EXECUTION
     const {data} = responseData;
-    // let html = "";
     
     data.forEach(element => {
       

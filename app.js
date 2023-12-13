@@ -9,6 +9,9 @@ let availableKeywords = [
     'ព្រីរន្ធ3 vena',
     'brocoli',
     'unicef',
+    'a',
+    'b',
+    'c'
     
 ]
 
@@ -23,11 +26,22 @@ inputBox.onkeyup = () => {
                 .includes(input.toLowerCase()));
         })
         
-        resultBox.innerHTML = result;
+    display(result)
     }
+}
 
-    
-    
+function display(results) {
+    const htmlResult = results.map(result => {
+        return `<li onclick="selectInput(this)">${result}</li>`
+    });
+
+    resultBox.innerHTML = `<ul>${htmlResult.join('')}</ul>`
+}
+
+function selectInput(result) {
+    inputBox.value = result.innerHTML;
+    resultBox.innerHTML = '';
+    fetchFunction()
 }
 
 
