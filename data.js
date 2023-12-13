@@ -13,6 +13,7 @@ const logButton = document.querySelector('#log-button');
 
 let resultBox = document.querySelector('.result-box');
 let fetchedData = [];
+let availableKeyword;
 
 
 // API read 
@@ -28,64 +29,62 @@ const fetchFunction = async () => {
     
     // DATA EXECUTION
     fetchedData = data.data;
-    console.log('successfully retrieve data from google sheet')
-    /*
-    data.forEach(element => {
-      
-      if (element.Users == inputBox.value) {
-        const htmlTemplate = 
-        `
-        <div class="card">
-          <p class="users">${element.Users}</p>
-          <p class="age">${element.age}</p>
-          <p class="school">${element.school}</p>  
-        </div>
-        `;
-        
-        resultBox.innerHTML = htmlTemplate;
-      }
-    });
-    */
-
+    availableKeyword = fetchedData.map(data => data.product);
+    console.log('successfully fetch data from google sheet');
+    
     // END DATA EXECUTION
   } 
   catch { console.error(error) }
 };
 
-
-let availableKeyword = fetchedData.map(data => data.product)
-
 inputBox.onkeyup = () => {
-  let result;
+  let options;
   const input = inputBox.value;
 
   if (input.length) {
-      result = availableKeyword.filter(keyword => {
+      options = availableKeyword.filter(keyword => {
           return (keyword
               .toLowerCase()
               .includes(input.toLowerCase()));
       })
-      
-  display(result)
+  
+  display(options)
   }
 }
 
-function display(results) {
-  const htmlResult = results.map(result => {
-      return `<li onclick="selectInput(this)">${result}</li>`
+function display(options) {
+  const htmlOptions = options.map(option => {
+      return `<li onclick="selectInput(this)">${option}</li>`
   });
 
-  resultBox.innerHTML = `<ul>${htmlResult.join('')}</ul>`
+  resultBox.innerHTML = `<ul>${htmlOptions.join('')}</ul>`
 }
 
-function selectInput(result) {
-  inputBox.value = result.innerHTML;
+function selectInput(options) {
+  inputBox.value = options.innerHTML;
   resultBox.innerHTML = '';
+  show();
+  inputBox.value = '';
 }
 
 function logData() {
-  let availableKeyword = fetchedData.map(data => data.product)
   console.log(availableKeyword);
+}
+
+function show() {
+  fetchedData.forEach(product => {
+    if (inputBox.value == product.product) {
+      const htmlResult  = 
+      `
+      <p>${product.product}</p>
+      <p>poipet: ${product.pp}</p>
+      <p>svay: ${product.svay}</p>
+      <p>btb: ${product.btb}</p>
+      `
+
+      resultBox.innerHTML = htmlResult;
+    }
+  });
 }
 
 logButton.onclick = logData;
