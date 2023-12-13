@@ -20,10 +20,11 @@ const fetchFunction = async () => {
     
     // DATA EXECUTION
     const {data} = responseData;
-    let html = "";
+    // let html = "";
     
     data.forEach(element => {
-      if (element.Users === itemInput.value) {
+      
+      if (element.Users == inputBox.value) {
         const htmlTemplate = 
         `
         <div class="card">
@@ -33,16 +34,9 @@ const fetchFunction = async () => {
         </div>
         `;
         
-        dataGrid.innerHTML = htmlTemplate;
+        resultBox.innerHTML = htmlTemplate;
       }
-
-      
-      
-      // html += htmlTemplate;
     });
-
-    // dataGrid.innerHTML = html;
-    // console.log(html);
 
     // END DATA EXECUTION
   } 
