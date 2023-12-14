@@ -13,84 +13,111 @@ function json(sheetName) {
     return jsonData;
   }
   
-  // Function to convert a 2D array to JSON
-  function convertToJson(data) {
-    const headers = data[0];
-    const raw_data = data.slice(1);
-    let json = [];
-    
-    raw_data.forEach(d => {
-      let object = {};
-      for (let i = 0; i < headers.length; i++) {
-        object[headers[i]] = d[i];
-      }
-      json.push(object);
-    });
-    
-    return json;
-  }
+// Function to convert a 2D array to JSON
+function convertToJson(data) {
+  const headers = data[0];
+  const raw_data = data.slice(1);
+  let json = [];
   
-  // Function to append a new row to a sheet
-  function appendRow(sheetName, rowData) {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = spreadsheet.getSheetByName(sheetName);
+  raw_data.forEach(d => {
+    let object = {};
+    for (let i = 0; i < headers.length; i++) {
+      object[headers[i]] = d[i];
+    }
+    json.push(object);
+  });
+  
+  return json;
+}
+  
+// Function to append a new row to a sheet
+function appendRow(sheetName, rowData) {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName(sheetName);
+  
+  if (sheet !== null) {
+    // Read existing data
+    const existingData = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().flat();
     
-    if (sheet !== null) {
-      // Read existing data
-      const existingData = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().flat();
-      
-      // Check if the value already exists
-      if (existingData.includes(rowData[0])) {
-        return "Already exists";
-      }
-      
-      // Append the new row
-      sheet.appendRow(rowData);
-      return "Row added successfully";
+    // Check if the value already exists
+    if (existingData.includes(rowData[0])) {
+      return "Already exists";
     }
     
-    return "Sheet not found";
+    // Append the new row
+    sheet.appendRow(rowData);
+    return "Row added successfully";
   }
   
-  parameter = {product: 'adfefa'}
-  
-  // Main function to handle GET requests
-  function doGet(e) {
-    try {
-      const path = e.parameter.path;
-      const action = e.parameter.action;
-      let debugInfo = `doGet called. Path: ${path}, Action: ${action}`;
-  
-      if (action === 'read') {
-        const jsonData = json(path);
-        return ContentService
-              .createTextOutput(JSON.stringify({debugInfo, data: jsonData}))
-              .setMimeType(ContentService.MimeType.JSON);
-      } else if (action === 'write') {
-        const rowData = [];
-        
-        rowData.push(e.parameter['product'] || '');
-        const result = appendRow(path, rowData);
-        return ContentService
-              .createTextOutput(`${result}. Debug: ${debugInfo}`)
-              .setMimeType(ContentService.MimeType.TEXT);
+  return "Sheet not found";
+}
 
-      } else if (action === 'delete') {
-        // delete execution
+// Function to update a row to a sheet
+function updateRow(sheetName, rowData) {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet.getSheetByName(sheetName);
+  
+  if (sheet !== null) {
+    // Read existing data
+    const existingData = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().flat();
+    
+    // Check if the value already exists
+    if (!existingData.includes(rowData[0])) {
+      return "data not found";
+    }
+    
+    // update the matched row
+    const rowNum = existingData.indexOf(rowData[0]);
+    sheet[rowNum] = rowData;
+    return "Row updated successfully";
+  }
+  
+  return "Sheet not found";
+}
+    
+// Main function to handle GET requests
+function doGet(e) {
+  try {
+    const path = e.parameter.path;
+    const action = e.parameter.action;
+    let debugInfo = `doGet called. Path: ${path}, Action: ${action}`;
 
-        return ContentService
-              .createTextOutput(`${result}. Debug: ${debugInfo}`)
-              .setMimeType(ContentService.MimeType.TEXT);   
-                         
-      } else {
-        return ContentService
-              .createTextOutput(`Invalid action. Debug: ${debugInfo}`)
-              .setMimeType(ContentService.MimeType.TEXT);
-      }
-    } catch (error) {
+    if (action === 'read') {
+      const jsonData = json(path);
       return ContentService
-            .createTextOutput(`An error occurred: ${error.toString()}`)
+            .createTextOutput(JSON.stringify({debugInfo, data: jsonData}))
+            .setMimeType(ContentService.MimeType.JSON);
+    } else if (action === 'create') {
+      const rowData = [];
+      
+      rowData.push(e.parameter.product || '');
+      const result = appendRow(path, rowData);
+      return ContentService
+            .createTextOutput(`${result}. Debug: ${debugInfo}`)
+            .setMimeType(ContentService.MimeType.TEXT);
+
+    } else if (action === 'update') {
+      const product = e.parameter.product;
+      const pp = e.parameter.pp;
+      const svay = e.parameter.svay;
+      const btb = e.parameter.btb;
+
+      const rowData = [product, pp, svay, btb];
+      const result = updateRow(path, rowData)
+
+      return ContentService
+            .createTextOutput(`${result}. Debug: ${debugInfo}`)
+            .setMimeType(ContentService.MimeType.TEXT);
+                        
+    } else {
+      return ContentService
+            .createTextOutput(`Invalid action. Debug: ${debugInfo}`)
             .setMimeType(ContentService.MimeType.TEXT);
     }
+  } catch (error) {
+    return ContentService
+          .createTextOutput(`An error occurred: ${error.toString()}`)
+          .setMimeType(ContentService.MimeType.TEXT);
   }
+}
   
