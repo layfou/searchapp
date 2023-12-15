@@ -1,7 +1,7 @@
 // API read 
 const fetchFunction = async () => {
   try {
-    const response = await fetch(READ_API_URL);
+    const response = await fetch(readAPI);
     const data = await response.json();
     
     if (!response.ok) {
@@ -12,7 +12,6 @@ const fetchFunction = async () => {
     // DATA EXECUTION
     fetchedData = data.data;
     availableKeyword = fetchedData.map(data => data.product);
-    // console.log(fetchedData)
     console.log('successfully fetch data from google sheet');
     
     // END DATA EXECUTION
