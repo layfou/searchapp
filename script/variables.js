@@ -10,7 +10,9 @@ const API_KEY1 = 'AKfycbwp4Uhf31FAhn2tyrdhXMXG-XUOBGEL3k8w_FOtXlEIUy9DxOlPrWy1XA
 const API_KEY3 = 'AKfycbw_FkOYuLvyla25d4FAFASjq0ZBOdG2WWOVoo0N22_3Bscm2_Z-8sLT5TZQ8ylfGqFy';
 
 const EXEC_URL = `https://script.google.com/macros/s/${API_KEY3}/exec`
-const READ_API_URL = EXEC_URL + READ_EXEC;
+const readAPI = EXEC_URL + READ_EXEC;
+const createAPI = EXEC_URL + CREATE_EXEC;
+const updateAPI = EXEC_URL + UPDATE_EXEC;
 
 
 const fetchButton = document.querySelector('#fetch-button');
