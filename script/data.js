@@ -1,5 +1,7 @@
+// import {API_KEY3, EXEC_URL, READ_EXEC, readAPI} from "./variables.js"
+
 // API read 
-const fetchFunction = async () => {
+export const fetchFunction = async () => {
   try {
     const response = await fetch(readAPI);
     const data = await response.json();
@@ -12,7 +14,9 @@ const fetchFunction = async () => {
     // DATA EXECUTION
     fetchedData = data.data;
     availableKeyword = fetchedData.map(data => data.product);
-    console.log('successfully fetch data from google sheet');
+    const statusIcon = document.getElementById('status-icon');
+    statusIcon.className = 'far fa-circle-check';
+    statusIcon.style.color = 'rgb(46, 194, 68)';
     
     // END DATA EXECUTION
   } 

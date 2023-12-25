@@ -1,3 +1,6 @@
+import { fetchFunction } from "./data.js";
+// import {fetchButton, inputBox, resultBox, fetchedData, availableKeyword} from "./variables.js"
+
 inputBox.onkeyup = () => {
     let options;
     const input = inputBox.value;
@@ -9,11 +12,11 @@ inputBox.onkeyup = () => {
                 .includes(input.toLowerCase()));
         })
     
-    display(options)
+    displayOptions(options)
     }
 }
   
-function display(options) {
+function displayOptions(options) {
   const htmlOptions = options.map(option => {
       return `<li class="list-group-item" onclick="selectInput(this)">${option}</li>`
   });
@@ -24,11 +27,11 @@ function display(options) {
 function selectInput(options) {
   inputBox.value = options.innerHTML;
   resultBox.innerHTML = '';
-  show();
+  displaySelectedProduct();
   inputBox.value = '';
 }
 
-function show() {
+function displaySelectedProduct() {
   fetchedData.forEach(product => {
     if (inputBox.value == product.product) {
       const resultHTML  = 
