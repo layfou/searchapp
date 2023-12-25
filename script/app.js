@@ -27,10 +27,6 @@ function selectInput(options) {
   show();
   inputBox.value = '';
 }
-  
-function logData() {
-  console.log(availableKeyword);
-}
 
 function show() {
   fetchedData.forEach(product => {
@@ -41,7 +37,8 @@ function show() {
       <li>poipet: ${product.pp}</li>
       <li>svay: ${product.svay}</li>
       <li>btb: ${product.btb}</li>
-      <button onclick="edit()">Edit</button>
+      <button id="edit-button" data-name="${product.product}">Edit</button>
+      <button id="delete-button" data-name="${product.product}">Delete</button>
       `
 
       resultBox.innerHTML = `<ul>${resultHTML}</ul>`;
@@ -49,7 +46,7 @@ function show() {
   });
 }
 
-function edit() {
+function editProduct() {
   const editHTML = 
   `
   dasfiaiefl
@@ -61,9 +58,16 @@ function edit() {
 
 }
 
-function update() {
-  
-}
+resultBox.addEventListener('click', (e) => {
+  const name = e.target.dataset.name;
+  if (e.target.id == 'edit-button') {
+    console.log(`${name} edited successfully`)
+  }
 
-logButton.onclick = logData;
+  if (e.target.id == 'delete-button') {
+    console.log(`${name} deleted successfully`)
+  }
+  
+});
+
 fetchButton.onclick = fetchFunction;

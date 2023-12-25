@@ -16,7 +16,6 @@ const updateAPI = EXEC_URL + UPDATE_EXEC;
 const fetchButton = document.querySelector('#fetch-button');
 const searchBox = document.querySelector('.search-box');
 const inputBox = document.querySelector('#input-box');
-const logButton = document.querySelector('#log-button');
 
 let resultBox = document.querySelector('.result-box');
 let fetchedData = [];
