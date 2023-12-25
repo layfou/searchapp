@@ -15,10 +15,10 @@ inputBox.onkeyup = () => {
   
 function display(options) {
   const htmlOptions = options.map(option => {
-      return `<li onclick="selectInput(this)">${option}</li>`
+      return `<li class="list-group-item" onclick="selectInput(this)">${option}</li>`
   });
 
-  resultBox.innerHTML = `<ul>${htmlOptions.join('')}</ul>`
+  resultBox.innerHTML = `<ul class="list-group list-group-flush">${htmlOptions.join('')}</ul>`
 }
   
 function selectInput(options) {
@@ -35,19 +35,35 @@ function logData() {
 function show() {
   fetchedData.forEach(product => {
     if (inputBox.value == product.product) {
-      const htmlResult  = 
+      const resultHTML  = 
       `
       <li>${product.product}</li>
       <li>poipet: ${product.pp}</li>
       <li>svay: ${product.svay}</li>
       <li>btb: ${product.btb}</li>
-      <button onclick="">Edit</button>
+      <button onclick="edit()">Edit</button>
       `
 
-      resultBox.innerHTML = `<ul>${htmlResult}</ul>`;
+      resultBox.innerHTML = `<ul>${resultHTML}</ul>`;
     }
   });
 }
+
+function edit() {
+  const editHTML = 
+  `
+  dasfiaiefl
+  <button onclick="update()">Update</button>
+  `
+
+
+  resultBox.innerHTML = editHTML;
+
+}
+
+function update() {
   
+}
+
 logButton.onclick = logData;
 fetchButton.onclick = fetchFunction;
